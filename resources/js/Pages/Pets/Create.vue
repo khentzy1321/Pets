@@ -1,0 +1,122 @@
+
+<template>
+    <div class="section">
+
+        <Header class="text-center"> <h2>ADD CARS INFO</h2> </Header>
+        <div class="card">
+            <div class="card-body" style="box-shadow: 2px 2px 5px #222222;">
+                <form @submit.prevent="submitForm" id="consultation-form" class="feed-form" action="#">
+
+                    <input v-model="form.pet_name"  name="pet_name"  placeholder="Brand" type="text">
+                    <span>
+                        <div v-if="errors.pet_name" class="text-sm italic text-red-500">{{ errors.pet_name[0] }}</div>
+                    </span>
+                    <input v-model="form.pet_type" name="pet_type"  placeholder="Pet Type">
+                    <span>
+                        <div v-if="errors.v-pet_type" class="text-sm italic text-red-500">{{ errors.pet_type[0] }}</div>
+                    </span>
+                    <input v-model="form.pet_color" name="pet_color"  placeholder="Pet Color">
+                    <span>
+                        <div v-if="errors.pet_color" class="text-sm italic text-red-500">{{ errors.pet_color[0] }}</div>
+                    </span>
+                    <select v-model="form.petspecies_id" name="petspecies_id" placeholder="Pet Category">
+                        <option value="">Select Pet Category</option>
+                        <option v-for="category in petcategories" :value="category.id" :key="category.id">{{ category.pet_species }}</option>
+                      </select>
+
+
+                    <span>
+                        <div v-if="errors.petspecies_id" class="text-sm italic text-red-500">{{ errors.petspecies_id[0] }}</div>
+                    </span>
+                    <button type="submit" class="button_submit">Add</button>
+                  </form>
+            </div>
+        </div>
+    </div>
+
+
+</template>
+
+<script setup>
+  import AppLayout from "../../Layouts/AppLayout.vue"
+
+
+</script>
+<script>
+export default {
+layout: AppLayout,
+data() {
+  return {
+    form: {
+      pet_name: '',
+      pet_type: '',
+      pet_color: '',
+      petspecies_id: ''
+    },
+  };
+},
+props: {
+errors: Object,
+petcategories   : Array, // Define the prop for the errors object
+},
+methods: {
+  submitForm() {
+
+    this.$inertia.post(('/pets/store'), this.form)
+      .then(() => {
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+}
+}
+</script>
+<style>
+.section{
+position: absolute;
+top: 50%;
+left: 50%;
+transform:translate(-50%, -50%);
+width: 40%;
+}
+.feed-form {
+margin-top: 36px;
+display: flex;
+flex-direction: column;
+width: 100%;
+}
+
+.feed-form input {
+height: 54px;
+border-radius: 4px;
+background: rgba(0, 128, 128, 0.116);
+margin-bottom: 15px;
+border: none;
+padding: 0 20px;
+font-weight: 300;
+font-size: 14px;
+color: #000000;
+}
+
+.feed-form input:hover {
+transform: scale(1.009);
+box-shadow: 0px 0px 3px 0px #212529;
+}
+
+.button_submit {
+width: 50%;
+height: 54px;
+font-size: 14px;
+color: white;
+background: teal;
+border-radius: 5px;
+border: none;
+font-weight: 500;
+text-transform: uppercase;
+left: 50%;
+position: relative;
+transform: translateX(-50%);
+}
+
+</style>
